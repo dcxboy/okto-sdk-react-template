@@ -1,69 +1,53 @@
-import { useEffect, useState } from "react";
-import { GoogleAuthProvider, User } from "firebase/auth";
-import { auth } from "./config/firebase";
-import SignInWithGoogle from "./components/okto/SignInWithGoogle";
+import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
 import { OktoContextType, useOkto } from "okto-sdk-react";
+
+import "./App.css";
+import OktoUserInfo from "./components/okto/OktouserInfo";
 
 function App() {
   const oktoContext = useOkto() as OktoContextType;
 
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const responseMessage = (response: CredentialResponse) => {
+    console.log(response);
 
-  useEffect(() => {
-    // listen to the authentication state
-    const unsubscribe = auth.onAuthStateChanged((authUser) => {
-      if (authUser) {
-        // get user's ID token
-        authUser
-          .getIdToken()
-          .then((idToken) => {
-            console.log(idToken);
-            const googleIdToken = GoogleAuthProvider.credential(idToken);
-            console.log(googleIdToken);
-            if (oktoContext && googleIdToken?.idToken) {
-              // login to okto SDK
-              oktoContext.authenticate(
-                googleIdToken.idToken,
-                (result, error) => {
-                  if (result) {
-                    console.log("Okto Authentication Successful");
-
-                    // user is signed in to Google as well as Okto, set user
-                    setUser(authUser);
-                  }
-                  if (error) {
-                    console.error("Okto Authentication Error:", error);
-                  }
-                }
-              );
-            } else {
-              // handle invalid OktoProvider setup
-              console.warn(
-                "Okto SDK not initialised correctly, setup `OktoProvider` with a valid API key"
-              );
-            }
-          })
-          .finally(() => {
-            setLoading(false);
-          });
-      } else {
-        // user is signed out, reset the user
-        setUser(null);
-
-        setLoading(false);
+    try {
+      const { credential } = response;
+      if (!credential) {
+        console.log("credential not found");
+        return;
       }
-    });
 
-    // cleanup the listener on component unmount
-    return () => unsubscribe();
-  }, []);
+      if (!oktoContext) {
+        console.log("okto context is null");
+        return;
+      }
 
-  return loading ? (
-    <div>loading...</div>
-  ) : (
-    <div>
-      <SignInWithGoogle user={user} />
+      console.log("credential", credential);
+
+      oktoContext.authenticate(credential, (result, error) => {
+        if (result) {
+          console.log("authentication successful");
+        }
+        if (error) {
+          console.error("authentication error:", error);
+        }
+      });
+    } catch (error) {
+      console.log("Something went wrong. Please try again");
+    }
+  };
+
+  const errorMessage = () => {
+    console.log("Something went wrong");
+  };
+
+  return (
+    <div className="container">
+      <GoogleLogin onSuccess={responseMessage} onError={errorMessage} />
+
+      <div>
+        <OktoUserInfo />
+        </div>
     </div>
   );
 }
