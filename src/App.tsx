@@ -1,8 +1,11 @@
-
+import SignInWithGoogle from "./components/okto/SignInWithGoogle";
 
 function App() {
-
-  return <>Hello World</>;
+  return (
+    <>
+      <SignInWithGoogle />
+    </>
+  );
 }
 
 export default App;
