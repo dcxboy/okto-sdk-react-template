@@ -1,6 +1,6 @@
 # Get Started With Okto
 
-### Setup Google Authentication with Firebase
+### Setup Google Authentication
 
 1. Get client IDs for Google authentication. Follow [this guide](https://sdk-docs.okto.tech/guide/google-authentication-setup)
 
@@ -9,3 +9,10 @@
 ### Setup OktoProvider
 
 1. Update `apiKey` in [main.tsx](./src/main.tsx) with your Okto API key
+
+### Run Locally
+
+```zsh
+npm install
+npm run dev
+```
