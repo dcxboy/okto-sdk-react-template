@@ -136,3 +136,65 @@ tbody tr:nth-child(even) {
   color: var(--primary-color);
   font-weight: 600;
 }
+
+.transfer-tokens-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.form-group input {
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 1rem;
+  color: var(--text-color);
+  background-color: #f9fafb;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+  border-color: var(--primary-color);
+  outline: none;
+}
+
+.transfer-tokens-button {
+  padding: 0.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.transfer-tokens-button:hover {
+  opacity: 90%;
+}
+
+.transfer-response {
+  margin-top: 1.5rem;
+  background-color: #f1f5f9;
+  padding: 1rem;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+}
+
+.error-message {
+  margin-top: 1rem;
+  color: #ef4444;
+  font-weight: 600;
+}

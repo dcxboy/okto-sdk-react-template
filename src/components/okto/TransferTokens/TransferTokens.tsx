@@ -33,48 +33,66 @@ const TransferTokens = ({}: Props) => {
   return (
     <div>
       <h2>Transfer Tokens</h2>
-      <form onSubmit={handleTransferTokens}>
-        <input
-          type="text"
-          name="network_name"
-          placeholder="Network Name"
-          value={transferData.network_name}
-          onChange={handleInputChange}
-          required
-        />
-        <input
-          type="text"
-          name="token_address"
-          placeholder="Token Address"
-          value={transferData.token_address}
-          onChange={handleInputChange}
-          required
-        />
-        <input
-          type="text"
-          name="quantity"
-          placeholder="Quantity"
-          value={transferData.quantity}
-          onChange={handleInputChange}
-          required
-        />
-        <input
-          type="text"
-          name="recipient_address"
-          placeholder="Recipient Address"
-          value={transferData.recipient_address}
-          onChange={handleInputChange}
-          required
-        />
-        <button type="submit">Transfer Tokens</button>
+      <form onSubmit={handleTransferTokens} className="transfer-tokens-form">
+        <div className="form-group">
+          <label htmlFor="network_name">Network Name</label>
+          <input
+            type="text"
+            id="network_name"
+            name="network_name"
+            placeholder="Network Name"
+            value={transferData.network_name}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="token_address">Token Address</label>
+          <input
+            type="text"
+            id="token_address"
+            name="token_address"
+            placeholder="Token Address"
+            value={transferData.token_address}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="quantity">Quantity</label>
+          <input
+            type="text"
+            id="quantity"
+            name="quantity"
+            placeholder="Quantity"
+            value={transferData.quantity}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="recipient_address">Recipient Address</label>
+          <input
+            type="text"
+            id="recipient_address"
+            name="recipient_address"
+            placeholder="Recipient Address"
+            value={transferData.recipient_address}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
+        <button type="submit" className="transfer-tokens-button">
+          Transfer Tokens
+        </button>
       </form>
       {transferResponse && (
-        <div>
+        <div className="transfer-response">
           <h2>Transfer Response:</h2>
           <pre>{JSON.stringify(transferResponse, null, 2)}</pre>
         </div>
       )}
-      {error && <div>{error}</div>}
+      {error && <div className="error-message">{error}</div>}
     </div>
   );
 };
