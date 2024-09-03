@@ -1,17 +1,18 @@
-import { signInWithPopup } from "firebase/auth";
+import { signInWithPopup, User } from "firebase/auth";
 import { useState } from "react";
 import { auth, Providers } from "../../config/firebase";
 
-type Props = {};
+type Props = {
+  user: User | null;
+};
 
-const SignInWithGoogle = ({}: Props) => {
+const SignInWithGoogle = ({ user }: Props) => {
   const [disabled, setDisabled] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
   const signInWithGoogle = () => {
     setDisabled(true);
     signInWithPopup(auth, Providers.google)
-      .then(() => {})
       .catch((error) => {
         setErrorMessage(error.code + ": " + error.message);
       })
@@ -22,10 +23,14 @@ const SignInWithGoogle = ({}: Props) => {
 
   return (
     <div>
-      <button disabled={disabled} onClick={signInWithGoogle}>
-        Sign In With Google
-      </button>
-      <div>{errorMessage}</div>
+      {user ? (
+        <div>Welcome, {user.displayName}!</div>
+      ) : (
+        <button disabled={disabled} onClick={signInWithGoogle}>
+          Sign In With Google
+        </button>
+      )}
+      {errorMessage && <div>{errorMessage}</div>}
     </div>
   );
 };
