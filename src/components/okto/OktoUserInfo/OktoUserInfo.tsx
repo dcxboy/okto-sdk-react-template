@@ -5,6 +5,7 @@ import {
   NetworkData,
   PortfolioData,
   TokensData,
+  WalletData,
 } from "okto-sdk-react";
 import { useEffect, useState } from "react";
 
@@ -18,6 +19,7 @@ const OktoUserInfo = ({ tab = "userDetails" }: Props) => {
     getSupportedNetworks,
     getPortfolio,
     getSupportedTokens,
+    getWallets,
   } = useOkto() as OktoContextType;
 
   const [userDetails, setUserDetails] = useState<User | null>(null);
@@ -26,6 +28,7 @@ const OktoUserInfo = ({ tab = "userDetails" }: Props) => {
   const [supportedTokens, setSupportedTokens] = useState<TokensData | null>(
     null
   );
+  const [wallets, setWallets] = useState<WalletData | null>(null);
 
   useEffect(() => {
     if (tab === "userDetails") {
@@ -71,12 +74,24 @@ const OktoUserInfo = ({ tab = "userDetails" }: Props) => {
           console.error(`Error fetching supported tokens:`, error);
         });
     }
+
+    if (tab === "wallets") {
+      getWallets()
+        .then((result) => {
+          console.log("Wallets:", result);
+          setWallets(result);
+        })
+        .catch((error) => {
+          console.error(`Error fetching wallets:`, error);
+        });
+    }
   }, [
     tab,
     getUserDetails,
     getSupportedNetworks,
     getPortfolio,
     getSupportedTokens,
+    getWallets,
   ]);
 
   return (
@@ -84,7 +99,7 @@ const OktoUserInfo = ({ tab = "userDetails" }: Props) => {
       {tab === "userDetails" && userDetails && (
         <>
           <h2>User Details</h2>
-          <div>
+          <div className="user-details-card">
             <div className="user-detail-item">
               <strong>Email:</strong> {userDetails.email}
             </div>
@@ -179,6 +194,30 @@ const OktoUserInfo = ({ tab = "userDetails" }: Props) => {
             </table>
           </>
         )}
+
+      {tab === "wallets" && wallets && (
+        <>
+          <h2>Wallets</h2>
+          {wallets.wallets.length > 0 && (
+            <table>
+              <thead>
+                <tr>
+                  <th>Network Name</th>
+                  <th>Wallet Address</th>
+                </tr>
+              </thead>
+              <tbody>
+                {wallets.wallets.map((wallet, index) => (
+                  <tr key={index}>
+                    <td>{wallet.network_name}</td>
+                    <td>{wallet.address}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </>
+      )}
     </div>
   );
 };
